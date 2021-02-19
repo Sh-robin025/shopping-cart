@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Shopping Cart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <section>
+        <div class="container">
+            <div class="cart">
+                <div class="col-md-12 col-lg-10 mx-auto">
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item">
+                                <img src="images/product-1.png" alt="">
+                                <h5>iPhone 11 128GB Black</h5>
+                            </div>
+
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button onclick="itemUnitAdd('phone', false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                                    <input type="text" id="phone-count" class="form-control text-center" value="0">
+                                    <button onclick="itemUnitAdd('phone', true)" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <h5 id="phone-price">$ 0</h5>
+                                <img src="images/remove.png" alt="" class="remove-item">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row">
+                            <div class="col-md-7 center-item mx-auto">
+                                <img src="images/product-2.png" alt="">
+                                <h5>iPhone 11 Silicone Case - Black</h5>
+                            </div>
+                            <div class="col-md-5 center-item">
+                                <div class="input-group number-spinner">
+                                    <button onclick="itemUnitAdd('case', false)" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                                    <input type="text" id="case-count" class="form-control text-center" value="0">
+                                    <button onclick="itemUnitAdd('case', true)" class="btn btn-default"><i class="fas fa-plus"></i></button>
+
+                                </div>
+                                <h5 id="case-price">$ 0</h5>
+                                <img src="images/remove.png" alt="" class="remove-item">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-item">
+                        <div class="row">
+
+                            <div class="col-md-8">
+                                <h5>Subtotal: </h5>
+                                <h5>Tax:</h5>
+                                <h5>Total:</h5>
+                            </div>
+
+                            <div class="col-md-4 status">
+                                <h5 id="sub-total">$ 0</h5>
+                                <h5 id="tax">$ 0</h5>
+                                <h5 id="in-total">$ 0</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pt-4 pb-4">
+                        <button type="button" class="btn btn-success check-out">Check Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function itemUnitAdd(product, increase) {
+            const productInput = document.getElementById(product + '-count');
+            const productInputNumber = parseInt(productInput.value);
+            let inputNumber = productInputNumber;
+            if (increase == true && productInputNumber < 10) {
+                inputNumber = productInputNumber + 1;
+            }
+            if (increase == false && productInputNumber > 0) {
+                inputNumber = productInputNumber - 1;
+            }
+            productInput.value = inputNumber;
+            let productTotal = 0;
+
+            if (product == 'phone') {
+                productTotal = inputNumber * 1219;
+            }
+            if (product == 'case') {
+                productTotal = inputNumber * 59;
+            }
+            document.getElementById(product + '-price').innerText = '$ ' + productTotal;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const phoneInput = getInputValue('phone');
+            const caseInput = getInputValue('case');
+
+            const subTotal = phoneInput * 1219 + caseInput * 59;
+            document.getElementById("sub-total").innerText = '$ ' + subTotal;
+
+            const tax = Math.round(subTotal * .05);
+            document.getElementById("tax").innerText = '$ ' + tax;
+
+            const inTotal = subTotal + tax;
+            document.getElementById("in-total").innerText = '$ ' + inTotal;
+            // document.getElementById("in-total").innerText = '$'+ subTotal + tax;
+        }
+
+        function getInputValue(product) {
+            const productInput = document.getElementById(product + '-count');
+            const productInputNumber = parseInt(productInput.value);
+            return productInputNumber;
+        }
+
+        // ----subTotal
+
+        // function calculateTotal() {
+        //    const phoneInput = document.getElementById("phone-count");
+        //    const phoneInputNumber = parseInt(phoneInput.value);
+
+        //    const caseInput = document.getElementById("case-count");
+        //    const caseInputNumber = parseInt(caseInput.value);
+
+        //    const subTotal = phoneInputNumber * 1219 + caseInputNumber * 59;
+        //    document.getElementById("sub-total").innerText = '$' + subTotal;
+        // }
+
+        // ----here is phone (+/-) && with adjust price 
+
+        // document.getElementById("increase-phone").addEventListener("click", function() {
+        //    const phoneInput = document.getElementById("phone-count");
+        //    const inputNumber = parseInt(phoneInput.value);
+        //    const newInputNumber = inputNumber + 1 ;
+        //     phoneInput.value = newInputNumber ;
+        //    document.getElementById("phone-price").innerText = "$" + newInputNumber * 1219;
+        // })
+        // document.getElementById("remove-phone").addEventListener("click", function() {
+        //    const phoneInput = document.getElementById("phone-count");
+        //    const inputNumber = parseInt(phoneInput.value);
+        //    const newInputNumber = inputNumber - 1 ;
+        //     phoneInput.value = newInputNumber ;
+        //    document.getElementById("phone-price").innerText = "$" + newInputNumber * 1219;
+        // });
+
+
+        // function phoneUnitAdd(increase) {
+        //    const phoneInput = document.getElementById("phone-count");
+        //    const inputNumber = parseInt(phoneInput.value);
+        //    let updateInputNumber = inputNumber;
+        //    if (increase == true && inputNumber < 10) {
+        //       updateInputNumber = inputNumber + 1;
+        //    }
+        //    if (increase == false && inputNumber > 0) {
+        //       updateInputNumber = inputNumber - 1;
+        //    }
+        //    phoneInput.value = updateInputNumber;
+        //    total = updateInputNumber * 1219;
+        //    document.getElementById("phone-price").innerText = '$' + total;
+        // }
+
+        // //---- here is case  (+/-) && with adjust price
+
+        // function caseUnitAdd(increase) {
+        //    const caseCount = document.getElementById("case-count");
+        //    const inputNumber = parseInt(caseCount.value);
+        //    updateInputNumber = inputNumber;
+        //    if (increase == true && inputNumber < 10) {
+        //       updateInputNumber = inputNumber + 1;
+        //    }
+        //    if (increase == false && inputNumber > 0) {
+        //       updateInputNumber = inputNumber - 1;
+        //    }
+        //    caseCount.value = updateInputNumber;
+        //    total = updateInputNumber * 59;
+        //    document.getElementById("case-price").innerText = '$' + total;
+        // }
+    </script>
+</body>
+
+</html>
